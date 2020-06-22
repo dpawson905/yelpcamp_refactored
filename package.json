@@ -1,0 +1,37 @@
+{
+  "name": "async-await-yelpcamp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "DEBUG=async-await-yelpcamp:* nodemon",
+    "dev-win": "set DEBUG=async-await-yelpcamp:* & nodemon"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.0",
+    "cloudinary": "^1.14.0",
+    "compression": "^1.7.4",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "~1.4.5",
+    "debug": "~4.1.1",
+    "ejs": "~3.1.3",
+    "express": "~4.17.1",
+    "express-sanitizer": "^1.0.5",
+    "express-session": "^1.17.1",
+    "helmet": "^3.23.1",
+    "http-errors": "~1.7.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.9.19",
+    "morgan": "~1.10.0",
+    "multer": "^1.4.1",
+    "multer-storage-cloudinary": "^2.2.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "stripe": "^8.64.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
