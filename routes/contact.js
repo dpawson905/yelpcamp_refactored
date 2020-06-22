@@ -3,9 +3,7 @@ const router = express.Router();
 
 const {
   asyncErrorHandler,
-  isAuthenticated,
   isNotAuthenticated,
-  isNotVerified
 } = require('../middleware');
 
 const {
