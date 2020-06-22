@@ -14,9 +14,7 @@ const {
 
 const {
   asyncErrorHandler,
-  isAuthenticated,
   isNotAuthenticated,
-  isNotVerified,
   checkCampgroundOwnership,
   isPaid
 } = require('../middleware');
@@ -45,10 +43,13 @@ router.get('/new', isNotAuthenticated, getNewCampground);
 /* GET campground */
 router.get('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getCampground));
 
+/* GET edit campground */
+router.get('/:id/edit', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getEditCampground));
+
 /* PUT campground */
-router.put('/:id', isAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
+router.put('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
 
 /* DELETE campground */
-router.delete('/:id', isAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(deleteCampground));
+router.delete('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(deleteCampground));
 
 module.exports = router;

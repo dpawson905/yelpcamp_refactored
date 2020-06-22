@@ -16,14 +16,6 @@ module.exports = {
     res.redirect("/users/login");
   },
 
-  isAuthenticated(req, res, next) {
-    if (!req.isAuthenticated()) {
-      return next();
-    }
-    req.flash("error", "You are already logged in");
-    res.redirect("back");
-  },
-
   async checkCampgroundOwnership(req, res, next) {
     const foundCampground = await Campground.findById(req.params.id);
     if (foundCampground.author.id.equals(req.user._id)) return next();

@@ -3,10 +3,8 @@ var router = express.Router();
 
 const {
   asyncErrorHandler,
-  isAuthenticated,
   isNotAuthenticated,
-  isNotVerified,
-  isPaid
+  isNotVerified
 } = require('../middleware');
 
 const {
@@ -24,19 +22,19 @@ const {
 } = require('../controllers/pay');
 
 /* GET users listing. */
-router.get('/register', isAuthenticated, getRegister);
+router.get('/register', getRegister);
 
 /* POST users register */
-router.post('/register', isAuthenticated, asyncErrorHandler(postRegister));
+router.post('/register', asyncErrorHandler(postRegister));
 
 /* GET verify user */
-router.get('/verify-email', isAuthenticated, asyncErrorHandler(verifyEmail));
+router.get('/verify-email', asyncErrorHandler(verifyEmail));
 
 /* GET login */
-router.get('/login', isAuthenticated, getLogin);
+router.get('/login', getLogin);
 
 /* POST login */
-router.post('/login', isAuthenticated, asyncErrorHandler(isNotVerified), asyncErrorHandler(postLogin));
+router.post('/login', asyncErrorHandler(isNotVerified), asyncErrorHandler(postLogin));
 
 /* LOGOUT */
 router.get('/logout', isNotAuthenticated, logout);
