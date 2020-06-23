@@ -25,4 +25,8 @@ const campgroundSchema = new mongoose.Schema({
   ],
 });
 
+campgroundSchema.index({
+  name: 'text'
+})
+
 module.exports = mongoose.model("Campground", campgroundSchema);

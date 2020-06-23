@@ -2,13 +2,24 @@ const debug = require("debug")("async-await-yelpcamp:campground");
 const Campground = require("../models/campground");
 const { cloudinary } = require('../cloudinary');
 const { deleteCampgroundImage } = require('../middleware');
+const _ = require('lodash');
 
 module.exports = {
   async getCampgrounds(req, res, next) {
     if (req.query.paid) res.locals.success = 'Payment succeeded, welcome to YelpCamp!';
-    console.log(req.user)
-    const campgrounds = await Campground.find({});
-    return res.render('campgrounds/index', { campgrounds });
+    if(req.query.search) {
+      const regex = new RegExp(_.escapeRegExp(req.query.search));
+      const campgrounds = await Campground.find({ name: regex });
+      if(campgrounds.length < 1) {
+        req.flash('error', `No campgrounds match ${regex}, please try again.`)
+        return res.redirect('/campgrounds')
+      }else {
+        return res.render('campgrounds/index', { campgrounds });
+      }
+    } else {
+      const campgrounds = await Campground.find({});
+      return res.render('campgrounds/index', { campgrounds });
+    }
   },
 
   getNewCampground(req, res, next) {

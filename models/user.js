@@ -25,4 +25,9 @@ UserSchema.plugin(passportLocalMongoose, {
   usernameLowerCase: true
 });
 
+UserSchema.index({
+  username: 'text',
+  email: 'text'
+})
+
 module.exports = mongoose.model("User", UserSchema);

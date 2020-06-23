@@ -31,18 +31,19 @@ module.exports = {
   },
 
   isPaid(req, res, next) {
-    if (req.user.isPaid) {
-      return next();
-    }
+    if (req.user.isPaid) return next();
     req.flash("error", "Please pay registration fee before continuing");
     return res.redirect("/users/checkout");
   },
 
   async isNotVerified(req, res, next) {
     const user = await User.findOne({ username: req.body.username });
-    if (user.isVerified) return next();
-    req.flash('error', 'Your account has not been verified. Please check your email to verify your account');
-    return res.redirect('/');
+    if (user) {
+      if (user.isVerified) return next();
+      req.flash('error', 'Your account has not been verified. Please check your email to verify your account');
+      return res.redirect('/');
+    }
+    next();
   },
 
   deleteCampgroundImage: async req => {

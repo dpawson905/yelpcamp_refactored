@@ -71,7 +71,6 @@ module.exports = {
     await user.save();
     await req.login(user, async (err) => {
       if (err) return next(err);
-      req.flash('success', `Welcome to Yelp Camp ${user.username}`);
       res.redirect('/users/checkout');
     });
   },

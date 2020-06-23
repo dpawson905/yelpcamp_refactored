@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>YelpCamp</title>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-      <link rel="stylesheet" href="/stylesheets/landing.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    <title>YelpCamp</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/landing.css">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" async></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   </head>
-  <body>
-    <div class="container">
-      <% if(error && error.length > 0){ %>
-        <div class="alert alert-danger" role="alert">
-          <%= error %>
-        </div>
-      <% } %>
-      <% if(success && success.length > 0){ %>
-        <div class="alert alert-success" role="alert">
-          <%= success %>
-        </div>
-      <% } %>
-    </div>
-
-    <div id="landing-header">
-      <h1>Welcome to YelpCamp!</h1>
-      <% if(currentUser) { %>
-        <a href="/campgrounds" class="btn btn-lg btn-success">View All Campgrounds</a>
-      <% } else { %> 
-        <a href="/users/login" class="btn btn-lg btn-success">Login to view Campgrounds</a>
-      <% } %>
-    </div>
+    <body>
     
-    <ul class="slideshow">
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  <%- include('partials/footer') %>
+      <div class="container">
+        <% if(error && error.length > 0){ %>
+          <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <%= error %>
+          </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+          <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <%= success %>
+          </div>
+        <% } %>
+      </div>
+    
+      <div id="landing-header">
+        <h1>Welcome to YelpCamp!</h1>
+        <% if(currentUser) { %>
+          <a href="/campgrounds" class="btn btn-lg btn-success">View All Campgrounds</a>
+          <p>
+            <form action="/campgrounds" method="GET" class="form-inline">
+              <div class="form-group">
+                <input type="text" name="search" placeholder="Campground search..." class="form-control searchbox">
+                <input type="submit" value="Search" class="btn btn-default">
+              </div>
+            </form>
+          </p>
+        <% } else { %>
+          <a href="/users/login" class="btn btn-lg btn-success">Login/Register</a>
+        <% } %>
+      </div>
+    
+      <ul class="slideshow">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+
+<%- include ('partials/footer') %>

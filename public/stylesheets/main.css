@@ -13,3 +13,11 @@
 #delete-form {
   display: inline;
 }
+
+.searchbox {
+  min-width: 25vw !important;
+}
+
+#spam_check {
+  display: none;
+}
