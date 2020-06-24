@@ -21,7 +21,7 @@ module.exports = {
 
   async getEditComment(req, res, next) {
     const comment = await Comment.findById(req.params.comment_id);
-    res.render("comments/edit", { campground_id: req.params.id, comment });
+    res.render("comments/edit", { campground_slug: req.params.slug, comment });
   },
 
   async putEditComment(req, res, next) {

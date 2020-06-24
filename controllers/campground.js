@@ -56,23 +56,23 @@ module.exports = {
   },
 
   async getCampground(req, res, next) {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findOne({ slug: req.params.slug });
     return res.render("campgrounds/show", { campground });
   },
 
   async getEditCampground(req, res, next) {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findOne({ slug: req.params.slug });
     return res.render("campgrounds/edit", { campground });
   },
 
   async putEditCampGround(req, res, next) {
-    await Campground.findByIdAndUpdate(req.params.id, req.body.campground);
+    await Campground.findOneAndUpdate({ slug: req.params.slug }, req.body.campground);
     req.flash('success', 'Campground has been updated.')
     return res.redirect(`/campgrounds/${req.params.id}`);
   },
 
   async deleteCampground(req, res, next) {
-    const campground = await Campground.findByIdAndRemove(req.params.id);
+    const campground = await Campground.findOneAndRemove({ slug: req.params.slug });
     if (campground.image.public_id) {
       await cloudinary.v2.uploader.destroy(campground.image.public_id);
     }

@@ -17,7 +17,7 @@ module.exports = {
   },
 
   async checkCampgroundOwnership(req, res, next) {
-    const foundCampground = await Campground.findById(req.params.id);
+    const foundCampground = await Campground.findOne({ slug: req.params.slug });
     if (foundCampground.author.id.equals(req.user._id)) return next();
     req.flash("error", "You don't have permission to do that");
     return res.redirect("back");

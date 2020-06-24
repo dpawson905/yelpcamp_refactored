@@ -41,15 +41,15 @@ router.post('/', upload.single('image'), isNotAuthenticated, asyncErrorHandler(p
 router.get('/new', isNotAuthenticated, getNewCampground);
 
 /* GET campground */
-router.get('/:id', isNotAuthenticated, asyncErrorHandler(getCampground));
+router.get('/:slug', isNotAuthenticated, asyncErrorHandler(getCampground));
 
 /* GET edit campground */
-router.get('/:id/edit', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getEditCampground));
+router.get('/:slug/edit', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getEditCampground));
 
 /* PUT campground */
-router.put('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
+router.put('/:slug', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
 
 /* DELETE campground */
-router.delete('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(deleteCampground));
+router.delete('/:slug', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(deleteCampground));
 
 module.exports = router;
