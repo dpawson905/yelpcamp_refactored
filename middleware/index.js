@@ -48,5 +48,11 @@ module.exports = {
 
   deleteCampgroundImage: async req => {
     if (req.file) await cloudinary.v2.uploader.destroy(req.file.public_id);
+  },
+
+  checkProfileOwnership(req, res, next) {
+    if(req.params.username === req.user.username) return next();
+    req.flash('error', 'This is not your profile...')
+    return res.redirect('/campgrounds');
   }
 };

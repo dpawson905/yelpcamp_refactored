@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const comments = require('./comment');
 
 const campgroundSchema = new mongoose.Schema({
   name: String,
@@ -23,6 +24,17 @@ const campgroundSchema = new mongoose.Schema({
       ref: "Comment",
     },
   ],
+}, { timestamps: true });
+
+campgroundSchema.pre('findOne', function(next) {
+  this.populate({
+    path: 'comments',
+    options: {
+      sort: '-_id'
+    }
+  });
+  this.sort('-_id')
+  next();
 });
 
 campgroundSchema.index({

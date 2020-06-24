@@ -1,5 +1,6 @@
 const debug = require("debug")("async-await-yelpcamp:campground");
 const Campground = require("../models/campground");
+const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const { deleteCampgroundImage } = require('../middleware');
 const _ = require('lodash');
@@ -40,7 +41,9 @@ module.exports = {
           public_id
         };
       }
-      await Campground.create(campgroundInfo);
+      const campground = await Campground.create(campgroundInfo);
+      req.user.campgrounds.push(campground);
+      await req.user.save();
       req.flash('success', `${campgroundInfo.name} has been created.`);
       return res.redirect('/campgrounds');
     } catch(err) {
@@ -53,7 +56,7 @@ module.exports = {
   },
 
   async getCampground(req, res, next) {
-    const campground = await Campground.findById(req.params.id).populate('comments').exec();
+    const campground = await Campground.findById(req.params.id);
     return res.render("campgrounds/show", { campground });
   },
 
@@ -69,7 +72,10 @@ module.exports = {
   },
 
   async deleteCampground(req, res, next) {
-    await Campground.findByIdAndRemove(req.params.id);
+    const campground = await Campground.findByIdAndRemove(req.params.id);
+    if (campground.image.public_id) {
+      await cloudinary.v2.uploader.destroy(campground.image.public_id);
+    }
     req.flash('success', 'Campground removed');
     return res.redirect('/campgrounds');
   }

@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 const {
   asyncErrorHandler,
@@ -20,6 +20,8 @@ const {
   checkout,
   postPay
 } = require('../controllers/pay');
+
+
 
 /* GET users listing. */
 router.get('/register', getRegister);

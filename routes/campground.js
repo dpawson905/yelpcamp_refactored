@@ -41,7 +41,7 @@ router.post('/', upload.single('image'), isNotAuthenticated, asyncErrorHandler(p
 router.get('/new', isNotAuthenticated, getNewCampground);
 
 /* GET campground */
-router.get('/:id', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getCampground));
+router.get('/:id', isNotAuthenticated, asyncErrorHandler(getCampground));
 
 /* GET edit campground */
 router.get('/:id/edit', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getEditCampground));

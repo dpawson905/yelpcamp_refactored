@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+  
+  <div class="container">
+    <header class="jumbotron">
+      <h1>Darrell's Profile Page</h1>
+      <p>View your campgrounds and make changes to your information</p>
+    </header>
+    <div class="row">
+      <div class="col-md-7 col-sm-12">
+        <h2 class="text-center">Your campgrounds</h2>
+        <hr>
+        <ul class="list-group">
+          <% user.campgrounds.forEach((campground) => { %>
+            <li class="list-group-item"><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a><span class="pull-right">Created At: </span></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="col-md-5 col-sm-12">
+        <h2 class="text-center">Your information</h2>
+        <hr>
+        <div class="thumbnail">
+          <img src="<%= currentUser.image.secure_url %>">
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#imageModal">
+              Update Image
+            </button>
+          </li><li class="list-group-item">
+            <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#passwordModal">
+              Change Password
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <%- include('../partials/modals/imageModal') %>
+    <%- include('../partials/modals/passwordModal') %>
+  </div>
+<%- include('../partials/footer') %>

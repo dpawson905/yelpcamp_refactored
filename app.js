@@ -16,6 +16,7 @@ const MongoDBStore = require('connect-mongo')(session);
 const expressSanitizer = require('express-sanitizer');
 
 const usersRouter = require('./routes/users');
+const profileRouter = require('./routes/profile');
 const contactRouter = require('./routes/contact');
 const commentRouter = require('./routes/comment');
 const campgroundRouter = require('./routes/campground');
@@ -29,7 +30,8 @@ const app = express();
 mongoose.connect(process.env.DB_URL, {
   useCreateIndex: true,
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
@@ -58,6 +60,7 @@ app.use(helmet());
 app.use(methodOverride('_method'));
 app.use(expressSanitizer());
 app.use(express.static(path.join(__dirname, 'public')));
+app.locals.moment = require('moment');
 
 /* Set a varialble called sess and set some up some cookie stuff */
 const sess = {
@@ -93,11 +96,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', indexRouter);
+
 app.use('/campgrounds', campgroundRouter);
 app.use('/campgrounds/:id/comments', commentRouter);
 app.use('/contact', contactRouter);
+app.use('/profiles', profileRouter);
 app.use('/users', usersRouter);
+app.use('/', indexRouter);
 
 // catch 404 and display message to user
 app.use(function(req, res, next) {
