@@ -33,7 +33,6 @@ campgroundSchema.pre('findOne', function(next) {
       sort: '-_id'
     }
   });
-  this.sort('-_id')
   next();
 });
 

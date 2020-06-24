@@ -4,15 +4,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="imageModal">Modal title</h4>
+        <h4 class="modal-title" id="imageModal">Profile Image Uploader</h4>
       </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      <form action="/profiles/<%= currentUser.username %>?_method=PUT" method="post" enctype="multipart/form-data">
+        <div class="modal-body form-group">
+          <label for="image">Image</label>
+          <input type="file" id="image" name="image">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

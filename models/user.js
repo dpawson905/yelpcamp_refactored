@@ -34,7 +34,13 @@ UserSchema.index({
 });
 
 UserSchema.pre('findOne', function(next) {
-  this.populate('campgrounds');
+  this.populate({
+    path: 'campgrounds',
+    options: {
+      sort: '-_id'
+    },
+    limit: 10
+  });
   next();
 });
 
