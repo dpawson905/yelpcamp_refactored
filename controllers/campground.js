@@ -81,7 +81,6 @@ module.exports = {
   },
 
   async putEditCampGround(req, res, next) {
-    console.log(JSON.parse(JSON.stringify(req.body)))
     try {
       const campground = await Campground.findOne({ slug: req.params.slug });
       campground.name = req.body.campground.name;
