@@ -1,25 +1,16 @@
 <%- include('../partials/header') %>
-  
   <div class="container">
     <header class="jumbotron">
       <h1>Darrell's Profile Page</h1>
       <p>View your campgrounds and make changes to your information</p>
     </header>
     <div class="row">
-      <div class="col-md-7 col-sm-12">
-        <h2 class="text-center">Your campgrounds</h2>
-        <hr>
-        <ul class="list-group">
-          <% user.campgrounds.forEach((campground) => { %>
-            <li class="list-group-item"><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a>
-              <span class="pull-right">Created: <em><%= moment(campground.createdAt).startOf().fromNow()%></em> </span>
-            </li>
-          <% }) %>
-        </ul>
-      </div>
       <div class="col-md-5 col-sm-12">
-        <h2 class="text-center">Your information</h2>
-        <hr>
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <h3>Update Info</h3>
+          </div>
+        </div>
         <div class="thumbnail">
           <img src="<%= currentUser.image.secure_url %>">
         </div>
@@ -33,6 +24,41 @@
               Change Password
             </button>
           </li>
+        </ul>
+      </div>
+      <div class="col-md-7 col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading text-center">
+            <h3>Your Info</h3>
+          </div>
+          <div class="panel-body">
+            <% if(currentUser.roles.admin) { %>
+              <p>Role: <i class="fas fa-users-crown text-primary"></i> Admin</p>
+            <% } else if(currentUser.roles.moderator) { %>
+              <p>Role: <i class="fad fa-id-badge text-info"></i> Moderator</p>
+            <% } else { %>
+              Role: <i class="fas fa-fire-smoke text-danger"></i> Camper
+            <% } %>
+            <p>Username: <%= currentUser.username %>
+              <% if(currentUser.isOnline) { %>
+                <i class="fad fa-circle text-success"></i>
+              <% } else { %>
+                <i class="far fa-circle text-secondary"></i>
+              <% } %>
+            </p>
+            <p>Campgrounds Shared: <%= user.campgrounds.length %></p>
+          </div>
+          <div class="panel-footer">Panel Footer</div>
+        </div>
+        <hr>
+        <h2 class="text-center">Your campgrounds</h2>
+        <hr>
+        <ul class="list-group">
+          <% user.campgrounds.forEach((campground) => { %>
+            <li class="list-group-item"><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a>
+              <span class="pull-right">Created: <em><%= moment(campground.createdAt).startOf().fromNow()%></em> </span>
+            </li>
+          <% }) %>
         </ul>
       </div>
     </div>

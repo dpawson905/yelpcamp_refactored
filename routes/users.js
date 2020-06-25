@@ -39,7 +39,7 @@ router.get('/login', getLogin);
 router.post('/login', asyncErrorHandler(isNotVerified), asyncErrorHandler(postLogin));
 
 /* LOGOUT */
-router.get('/logout', isNotAuthenticated, logout);
+router.get('/logout', isNotAuthenticated, asyncErrorHandler(logout));
 
 /* GET checkout */
 router.get('/checkout', isNotAuthenticated, checkout);

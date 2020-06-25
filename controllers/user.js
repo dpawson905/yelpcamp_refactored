@@ -89,15 +89,22 @@ module.exports = {
   },
 
   async postLogin(req, res, next) {
-    await passport.authenticate("local", {
-      successRedirect: "/campgrounds",
-      failureRedirect: "/users/login",
-      successFlash: `Welcome back`,
-      failureFlash: true,
-    })(req, res, next);
+    const user = await User.findOne({ username: req.body.username });
+    if (user) {
+      user.isOnline = true;
+      await user.save();
+      await passport.authenticate("local", {
+        successRedirect: "/campgrounds",
+        failureRedirect: "/users/login",
+        successFlash: `Welcome back`,
+        failureFlash: true,
+      })(req, res, next);
+    }
   },
 
-  logout(req, res, next) {
+  async logout(req, res, next) {
+    req.user.isOnline = false;
+    await req.user.save();
     req.logout();
     res.redirect("/");
   },
