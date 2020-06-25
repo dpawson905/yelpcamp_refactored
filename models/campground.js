@@ -13,6 +13,14 @@ const campgroundSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+    cost: {
+      type: Number,
+      required: 'Price is required'
+    },
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
     image: {
       secure_url: {
         type: String,
@@ -56,13 +64,15 @@ campgroundSchema.pre("save", async function (next) {
 });
 
 campgroundSchema.pre("findOne", function (next) {
+ 
   this.populate({
-    path: "comments",
+    path: "comments likes",
     options: {
       sort: "-_id",
-    },
+    }
   });
   next();
+ 
 });
 
 campgroundSchema.index({

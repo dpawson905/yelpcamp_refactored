@@ -3,12 +3,12 @@ const Comment = require("../models/comment");
 
 module.exports = {
   async getNewComment(req, res, next) {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findOne({ slug: req.params.slug });
     return res.render("comments/new", { campground });
   },
 
   async postNewComment(req, res, next) {
-    const campground = await Campground.findById(req.params.id);
+    const campground = await Campground.findOne({ slug: req.params.slug });
     const comment = await Comment.create(req.body.comment);
     comment.author.id = req.user.id;
     comment.author.username = req.user.username;
@@ -16,7 +16,7 @@ module.exports = {
     campground.comments.push(comment);
     await campground.save();
     req.flash("success", "Successfully added comment");
-    return res.redirect(`/campgrounds/${campground._id}`);
+    return res.redirect(`/campgrounds/${campground.slug}`);
   },
 
   async getEditComment(req, res, next) {
@@ -26,12 +26,12 @@ module.exports = {
 
   async putEditComment(req, res, next) {
     await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
-    return res.redirect(`/campgrounds/${req.params.id}`);
+    return res.redirect(`/campgrounds/${req.params.slug}`);
   },
 
   async deleteComment(req, res, next) {
     await Comment.findByIdAndRemove(req.params.comment_id);
     req.flash("success", "Comment deleted");
-    return res.redirect(`/campgrounds/${req.params.id}`);
+    return res.redirect(`/campgrounds/${req.params.slug}`);
   }
 };

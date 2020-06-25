@@ -13,8 +13,50 @@
       <div class="thumbnail">
         <img class="img-responsive" src="<%= campground.image.secure_url %>" />
         <div class="caption-full">
-          <h4 class="pull-right">$9.00/night</h4>
+          <h4 class="pull-right"><%= campground.cost.toFixed(2) %>/night</h4>
           <h4><a><%=campground.name%></a></h4>
+          <div class="pull-right">
+            <button
+              type="button"
+              class="btn btn-xs btn-primary"
+              data-toggle="modal"
+              data-target="#campgroundLikes"
+            >
+              <span
+                >Total likes: <i class="fas fa-thumbs-up"></i> <%=
+                campground.likes.length %></span
+              >
+            </button>
+          </div>
+          <div style="padding-bottom: 10px;">
+            <form
+              action="/campgrounds/<%= campground.slug %>/like"
+              method="POST"
+            >
+              <div class="btn-group">
+                <% if (currentUser && campground.likes.some(function (like) {
+                return like.equals(currentUser._id) })) { %>
+                <button class="btn btn-sm btn-primary">
+                  <i class="fas fa-thumbs-up"></i> Liked (<%=
+                  campground.likes.length %>)
+                </button>
+                <% } else { %>
+                <button class="btn btn-sm btn-secondary">
+                  <i class="fas fa-thumbs-up"></i> Like (<%=
+                  campground.likes.length %>)
+                </button>
+                <% } %>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-default"
+                  data-toggle="modal"
+                  data-target="#campgroundLikes"
+                >
+                  See more details
+                </button>
+              </div>
+            </form>
+          </div>
           <p><%= campground.description %></p>
           <p>
             <em>Submitted By <%= campground.author.username %></em>
@@ -84,6 +126,7 @@
       </div>
     </div>
   </div>
+  <%- include('../partials/modals/likesModal') %>
 </div>
 
 <%- include('../partials/footer') %>

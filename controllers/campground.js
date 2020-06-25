@@ -1,6 +1,5 @@
 const debug = require("debug")("async-await-yelpcamp:campground");
 const Campground = require("../models/campground");
-const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const { deleteCampgroundImage } = require('../middleware');
 const _ = require('lodash');
@@ -60,15 +59,52 @@ module.exports = {
     return res.render("campgrounds/show", { campground });
   },
 
+  async postLikes(req, res, next) {
+    let campground = await Campground.findOne({ slug: req.params.slug });
+    const foundUserLike = campground.likes.some((like) => {
+      return like.equals(req.user._id);
+    });
+    if (foundUserLike) {
+      // User already liked, removing like
+      campground.likes.pull(req.user._id);
+    } else {
+      // adding the new user like
+      campground.likes.push(req.user);
+    }
+    await campground.save();
+    return res.redirect(`/campgrounds/${campground.slug}`);
+  },
+
   async getEditCampground(req, res, next) {
     const campground = await Campground.findOne({ slug: req.params.slug });
     return res.render("campgrounds/edit", { campground });
   },
 
   async putEditCampGround(req, res, next) {
-    await Campground.findOneAndUpdate({ slug: req.params.slug }, req.body.campground);
-    req.flash('success', 'Campground has been updated.')
-    return res.redirect(`/campgrounds/${req.params.id}`);
+    console.log(JSON.parse(JSON.stringify(req.body)))
+    try {
+      const campground = await Campground.findOne({ slug: req.params.slug });
+      campground.name = req.body.campground.name;
+      campground.description = req.body.campground.description;
+      campground.cost = req.body.campground.cost;
+      if (req.file) {
+        if (campground.image.public_id) {
+          await cloudinary.v2.uploader.destroy(campground.image.public_id);
+        }
+        const { secure_url, public_id } = req.file;
+        campground.image = {
+          secure_url,
+          public_id
+        };
+      } 
+      await campground.save();
+      req.flash('success', 'Campground has been updated.')
+      return res.redirect(`/campgrounds/${req.params.slug}`);
+    } catch(err) {
+      deleteCampgroundImage(req);
+      console.log(err)
+      next(err);
+    }
   },
 
   async deleteCampground(req, res, next) {
@@ -78,5 +114,5 @@ module.exports = {
     }
     req.flash('success', 'Campground removed');
     return res.redirect('/campgrounds');
-  }
+  },
 }

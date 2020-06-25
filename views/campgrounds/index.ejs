@@ -27,12 +27,15 @@
             <div class="thumbnail">
               <img src="<%= campground.image.secure_url %>">
               <div class="caption">
-                <h4><%= campground.name %></h4>
+                  <h4><%= campground.name %></h4>
+                  <div>
+                      <span class="badge label-primary"><i class="fas fa-thumbs-up"></i> <%= campground.likes.length %></span>
+                  </div>
               </div>
               <p>
-                <a href="/campgrounds/<%= campground.slug %>" class="btn btn-primary">More Info</a>
+                  <a href="/campgrounds/<%= campground.slug %>" class="btn btn-primary">More Info</a>
               </p>
-            </div>
+           </div>
           </div>
         <% }); %>
     </div>

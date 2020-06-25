@@ -28,7 +28,8 @@ const {
   getCampground,
   getEditCampground,
   putEditCampGround,
-  deleteCampground
+  deleteCampground,
+  postLikes
 } = require('../controllers/campground');
 
 /* GET campgrounds */
@@ -47,9 +48,12 @@ router.get('/:slug', isNotAuthenticated, asyncErrorHandler(getCampground));
 router.get('/:slug/edit', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(getEditCampground));
 
 /* PUT campground */
-router.put('/:slug', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
+router.put('/:slug', upload.single('image'), isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(putEditCampGround));
 
 /* DELETE campground */
 router.delete('/:slug', isNotAuthenticated, asyncErrorHandler(checkCampgroundOwnership), asyncErrorHandler(deleteCampground));
+
+/* Post likes */
+router.post('/:slug/like', isNotAuthenticated, asyncErrorHandler(postLikes));
 
 module.exports = router;
