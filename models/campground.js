@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const comments = require("./comment");
+const Comment = require("./comment");
 
 const campgroundSchema = new mongoose.Schema(
   {
@@ -45,10 +45,12 @@ const campgroundSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
       },
-    ],
+    ]
   },
   { timestamps: true }
 );
+
+
 
 // add a slug before the campground gets saved to the database
 campgroundSchema.pre("save", async function (next) {
@@ -64,7 +66,6 @@ campgroundSchema.pre("save", async function (next) {
 });
 
 campgroundSchema.pre("findOne", function (next) {
- 
   this.populate({
     path: "comments likes",
     options: {
@@ -72,7 +73,6 @@ campgroundSchema.pre("findOne", function (next) {
     }
   });
   next();
- 
 });
 
 campgroundSchema.index({
@@ -112,6 +112,15 @@ function slugify(text) {
     .substring(0, 75); // Trim at 75 characters
   return slug + "-" + Math.floor(1000 + Math.random() * 9000); // Add 4 random digits to improve uniqueness
 }
+
+// remove comments from the array when a comment is deleted
+campgroundSchema.pre('remove', async function() {
+  await Comment.remove({
+    _id: {
+      $in: this.comments
+    }
+  });
+});
 
 const Campground = mongoose.model("Campground", campgroundSchema);
 

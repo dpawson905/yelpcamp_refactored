@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
+const Campground = require('./campground');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -81,6 +82,14 @@ UserSchema.pre("findOne", function (next) {
     limit: 10,
   });
   next();
+});
+
+UserSchema.pre('findOneAndRemove', async function() {
+  await Campground.remove({
+    _id: {
+      $in: this.campgrounds
+    }
+  });
 });
 
 UserSchema.plugin(passportLocalMongoose, {

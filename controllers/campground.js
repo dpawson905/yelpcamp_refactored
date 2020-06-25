@@ -1,5 +1,6 @@
 const debug = require("debug")("async-await-yelpcamp:campground");
 const Campground = require("../models/campground");
+const User = require('../models/user');
 const { cloudinary } = require('../cloudinary');
 const { deleteCampgroundImage } = require('../middleware');
 const _ = require('lodash');
@@ -107,7 +108,12 @@ module.exports = {
   },
 
   async deleteCampground(req, res, next) {
-    const campground = await Campground.findOneAndRemove({ slug: req.params.slug });
+    const campground = await Campground.findOne({ slug: req.params.slug });
+    await User.findOneAndUpdate(req.user.id, {
+      $pull: { campgrounds: campground.id}
+    });
+    
+    await campground.remove();
     if (campground.image.public_id) {
       await cloudinary.v2.uploader.destroy(campground.image.public_id);
     }

@@ -30,6 +30,9 @@ module.exports = {
   },
 
   async deleteComment(req, res, next) {
+    await Campground.findOneAndUpdate(req.params.slug, {
+      $pull: { comments: req.params.comment_id}
+    });
     await Comment.findByIdAndRemove(req.params.comment_id);
     req.flash("success", "Comment deleted");
     return res.redirect(`/campgrounds/${req.params.slug}`);

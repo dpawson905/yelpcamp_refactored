@@ -55,7 +55,7 @@
         <hr>
         <ul class="list-group">
           <% user.campgrounds.forEach((campground) => { %>
-            <li class="list-group-item"><a href="/campgrounds/<%= campground.id %>"><%= campground.name %></a>
+            <li class="list-group-item"><a href="/campgrounds/<%= campground.slug %>"><%= campground.name %></a>
               <span class="pull-right">Created: <em><%= moment(campground.createdAt).startOf().fromNow()%></em> </span>
             </li>
           <% }) %>
